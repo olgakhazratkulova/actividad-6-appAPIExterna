@@ -1,1 +1,28 @@
-<p>form works!</p>
+<h3>NEW USER</h3>
+
+<div class="container">
+    <form novalidate [formGroup]="myForm" (ngSubmit)="getDataForm()">
+        <div class="my-2">
+            <label class="form-label" for="firstname">First name</label>
+            <input class="form-control" type="text" id="firstname" placeholder="Introduce your name" formControlName = "first_name">
+            <p class="error" *ngIf="checkControl('first_name', 'required')">First name is required</p>
+        </div>
+        <div class="my-2">
+            <label class="form-label" for="lastname">Lastname</label>
+            <input class="form-control" type="text" id="lastname" placeholder="Introduce your surname" formControlName = "last_name">
+            <p class="error" *ngIf="checkControl('last_name', 'required')">Last name is required</p>
+
+        </div>
+        <div class="my-2">
+            <label class="form-label" for="email">Email</label>
+            <input class="form-control" type="text" id="email" placeholder="Introduce your email" formControlName = "email">
+            <p class="error" *ngIf="checkControl('email', 'required')">Email is required</p>
+
+        </div>
+        <div class="my-2">
+            <label class="form-label" for="image">Image</label>
+            <input class="form-control" type="url" id="image" placeholder="Introduce URL" formControlName = "image">
+        </div>
+        <button class="btn btn-danger" type="submit" [disabled] = "!myForm.valid">Save</button>
+    </form>
+</div>
