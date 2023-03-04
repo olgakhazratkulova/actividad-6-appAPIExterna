@@ -1,16 +1,27 @@
 <div class="card mb-3">
-    <div class="row g-0">
-      <div class="col-md-4">
-        <img [src]="user?.image" class="img-fluid rounded-start" [alt]="user?.first_name">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img
+        [src]="user?.image"
+        class="img-fluid rounded-start"
+        [alt]="user?.first_name"
+      />
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ user?.first_name }}</h5>
+        <h5 class="card-title">{{ user?.last_name }}</h5>
+        <p class="card-text pt-3">Username: {{ user?.username }}</p>
+        <p class="card-text">Email: {{ user?.email }}</p>
       </div>
-      <div class="col-md-8">
-        <div class="card-body">
-          <h5 class="card-title">{{user?.first_name}}</h5>
-          <h5 class="card-title">{{user?.last_name}}</h5>
-          <p class="card-text pt-3">Nombre de usuario: {{user?.username}}</p>
-          <p class="card-text">Email: {{user?.email}} </p>
-        </div>
+      <div class="btn-toolbar">
+        <button (click)="deleteUser(user._id)" class="btn btn-danger btn-space">Delete</button>
+        <button [routerLink]="'/update/' + user._id" class="btn btn-warning btn-space">Update</button>
+        <button [routerLink]="'/home'" class="btn btn-primary btn-space">
+          Back to the list
+        </button>
       </div>
-      <button [routerLink]="'/home'" class="btn btn-primary">Volver a la lista</button>
+  
     </div>
   </div>
+</div>

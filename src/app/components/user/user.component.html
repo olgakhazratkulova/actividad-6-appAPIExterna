@@ -1,15 +1,11 @@
- <div class="card shadow">
-  <img
-    [src]="myUser.image"
-    class="card-img-top"
-    [alt]="myUser.first_name"
-  />
+<div class="card shadow">
+  <img [src]="myUser.image" class="card-img-top" [alt]="myUser.first_name" />
   <div class="card-body">
-    <h5 class="card-title">{{myUser.first_name}} {{myUser.last_name}}</h5>
+    <h5 class="card-title">{{ myUser.first_name }} {{ myUser.last_name }}</h5>
   </div>
   <div class="card-body d-flex justify-content-evenly">
-    <button [routerLink]="'/user/'+myUser._id">Ver detalle</button>
-    <button [routerLink]="'/update/'+myUser._id">Actualizar</button>
-    <button (click)="deleteUser(myUser._id)">Borrar</button>
+    <button [routerLink]="'/user/' + myUser._id" class="btn btn-info">Info</button>
+    <button [routerLink]="'/update/' + myUser._id" class="btn btn-warning">Update</button>
+    <button (click)="deleteUser(myUser._id)" class="btn btn-danger">Delete</button>
   </div>
 </div>

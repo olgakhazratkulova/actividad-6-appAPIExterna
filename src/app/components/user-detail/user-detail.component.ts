@@ -28,4 +28,20 @@ export class UserDetailComponent implements OnInit {
 
   }
 
+  async deleteUser(pId: string | undefined): Promise<void> {
+    if(pId !== undefined) {
+      try {
+        let response = await this.usersService.delete(pId);
+        console.log(response);
+        if(response) {
+          alert('User has been deleted')
+        }  
+      }
+      catch(error) {
+        console.log(error)
+      }
+    }
+  }
+
+
 }

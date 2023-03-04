@@ -14,6 +14,8 @@ export class FormComponent implements OnInit {
 
   title: string = 'NEW';
   myForm: FormGroup;
+  emailPattern: string = '^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$';
+  imageUrlPattern: string = '\bhttps?:\/\/\S+\.(jpg|jpeg|png|gif)\b';
 
   constructor(
     private usersService: UsersService,
@@ -28,10 +30,12 @@ export class FormComponent implements OnInit {
         Validators.required
       ]),
       email: new FormControl("", [
-        Validators.required
+        Validators.required,
+        Validators.pattern(this.emailPattern)
       ]),
       image: new FormControl("", [
-        Validators.required
+        Validators.required,
+        Validators.pattern(this.imageUrlPattern)
       ]),
     }, [])
   }
