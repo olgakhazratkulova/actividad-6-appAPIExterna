@@ -1,6 +1,7 @@
 import { UsersService } from 'src/app/services/users.service';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-detail',
@@ -9,21 +10,21 @@ import { User } from 'src/app/interfaces/user.interface';
 })
 export class UserDetailComponent implements OnInit {
 
-  arrUsers: User[] = [];
+  user: User | any;
 
-  constructor(private usersService: UsersService) {
+  constructor(
+    private usersService: UsersService,
+    private activatedRoute: ActivatedRoute
+    ) {
 
   }
 
-  async ngOnInit(): Promise<void> {
-    try {
-      let response = await this.usersService.getAll();
-      this.arrUsers = response.results;
-      console.log(this.arrUsers);  
-    }
-    catch(error) {
-      console.log(error);
-    }
+  ngOnInit(): void {
+    this.activatedRoute.params.subscribe(async(params)=> {
+      let id: string = params['id'];
+      let response: User = await this.usersService.getUserById(id);
+      this.user = response;
+    })
 
   }
 

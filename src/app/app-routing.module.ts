@@ -10,6 +10,7 @@ const routes: Routes = [
   {path: 'home', component: UsersListComponent},
   {path: 'user/:id', component: UserDetailComponent},
   {path: 'new-user', component: FormComponent},
+  {path: 'update/:id', component: FormComponent},
   {path: "**", component: C404Component}
 ];
 

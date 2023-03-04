@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { NewUser } from 'src/app/interfaces/new-user.interface';
+import { User } from 'src/app/interfaces/user.interface';
 import { UsersService } from 'src/app/services/users.service';
 
 @Component({
@@ -9,9 +12,14 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class FormComponent implements OnInit {
 
+  title: string = 'NEW';
   myForm: FormGroup;
 
-  constructor(private usersService: UsersService) {
+  constructor(
+    private usersService: UsersService,
+    private router: Router,
+    private ativatedRoute: ActivatedRoute
+    ) {
     this.myForm = new FormGroup({
       first_name: new FormControl("", [
         Validators.required
@@ -28,8 +36,35 @@ export class FormComponent implements OnInit {
     }, [])
   }
 
-  getDataForm() {
-    console.log(this.myForm.value);
+  async getDataForm() {
+    let user = this.myForm.value;
+    if(user.id) {
+      try {
+        let response = await this.usersService.update(user);
+        console.log(response);
+        if(response.id) {
+          alert(`User ${response.first_name} with id ${response.id} has been updated succesfully`);
+          this.router.navigate([`home`])  
+        }
+      }
+      catch(error) {
+        console.log(error);
+       }
+      
+    }else {
+      try {
+        let response = await this.usersService.create(user);
+        console.log(response);
+        if(response.id) {
+          alert(`User ${response.first_name} with id ${response.id} has been created succesfully`);
+          this.router.navigate([`home`])
+        }
+       } 
+       catch(error) {
+        console.log(error);
+       }
+    
+    }
   }
 
   checkControl(pControlName: string, pError: string): boolean {
@@ -40,7 +75,23 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.ativatedRoute.params.subscribe(async(params : any) => {
+      let id = params.id;
+      if(id) {
+        this.title = 'UPDATE';
+        let response = await this.usersService.getUserById(id);
+        let user: User = response;
 
+        this.myForm = new FormGroup({
+          id: new FormControl(id, []),
+          first_name: new FormControl(user?.first_name, []),
+          last_name: new FormControl(user?.last_name, []),
+          email: new FormControl(user?.email, []),
+          image: new FormControl(user?.image, []),
+        }, [])
+    
+      }
+    })
   }
 
 
