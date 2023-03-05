@@ -27,6 +27,6 @@
             <p class="error" *ngIf="checkControl('image', 'required')">Image is required</p>
             <p class="error" *ngIf="checkControl('image', 'pattern')">URL has to be valid</p>
         </div>
-        <button class="btn btn-danger" type="submit" [disabled] = "!myForm.valid">Save</button>
+        <button class="btn btn-danger" type="submit" [disabled] = "!myForm.valid">{{editing?'UPDATE':'SAVE'}}</button>
     </form>
 </div>

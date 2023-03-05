@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NewUser } from 'src/app/interfaces/new-user.interface';
 import { User } from 'src/app/interfaces/user.interface';
 import { UsersService } from 'src/app/services/users.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-form',
@@ -14,8 +15,7 @@ export class FormComponent implements OnInit {
 
   title: string = 'NEW';
   myForm: FormGroup;
-  emailPattern: string = '^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$';
-  imageUrlPattern: string = '\bhttps?:\/\/\S+\.(jpg|jpeg|png|gif)\b';
+  editing: boolean = false;
 
   constructor(
     private usersService: UsersService,
@@ -31,11 +31,11 @@ export class FormComponent implements OnInit {
       ]),
       email: new FormControl("", [
         Validators.required,
-        Validators.pattern(this.emailPattern)
+        Validators.pattern(/^\S+\@\S+\.[com,es,ru]/)
       ]),
       image: new FormControl("", [
         Validators.required,
-        Validators.pattern(this.imageUrlPattern)
+        Validators.pattern(/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))/i)
       ]),
     }, [])
   }
@@ -47,8 +47,20 @@ export class FormComponent implements OnInit {
         let response = await this.usersService.update(user);
         console.log(response);
         if(response.id) {
-          alert(`User ${response.first_name} with id ${response.id} has been updated succesfully`);
-          this.router.navigate([`home`])  
+          Swal.fire({
+            title: 'Do you want to save the changes?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            denyButtonText: `Don't save`,
+          }).then((result: any) => {
+            if (result.isConfirmed) {
+              Swal.fire('Saved!', '', 'success')
+            } else if (result.isDenied) {
+              Swal.fire('Changes are not saved', '', 'info')
+            }
+            this.router.navigateByUrl('/user/' + user?.id)
+          })
         }
       }
       catch(error) {
@@ -60,7 +72,11 @@ export class FormComponent implements OnInit {
         let response = await this.usersService.create(user);
         console.log(response);
         if(response.id) {
-          alert(`User ${response.first_name} with id ${response.id} has been created succesfully`);
+          Swal.fire(
+            'Done!',
+            'New user has been created!',
+            'success'
+          );
           this.router.navigate([`home`])
         }
        } 
@@ -81,10 +97,12 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {
     this.ativatedRoute.params.subscribe(async(params : any) => {
       let id = params.id;
+      
       if(id) {
         this.title = 'UPDATE';
         let response = await this.usersService.getUserById(id);
         let user: User = response;
+        this.editing = true;
 
         this.myForm = new FormGroup({
           id: new FormControl(id, []),

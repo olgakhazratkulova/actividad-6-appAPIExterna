@@ -1,7 +1,8 @@
 import { UsersService } from 'src/app/services/users.service';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/interfaces/user.interface';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-user-detail',
@@ -9,12 +10,14 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./user-detail.component.css']
 })
 export class UserDetailComponent implements OnInit {
+  
 
   user: User | any;
 
   constructor(
     private usersService: UsersService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
     ) {
 
   }
@@ -34,7 +37,24 @@ export class UserDetailComponent implements OnInit {
         let response = await this.usersService.delete(pId);
         console.log(response);
         if(response) {
-          alert('User has been deleted')
+          Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result: any) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              );
+              this.router.navigate([`home`])
+            }
+          });
         }  
       }
       catch(error) {

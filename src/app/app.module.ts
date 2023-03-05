@@ -12,6 +12,7 @@ import { C404Component } from './components/c404/c404.component';
 import { FormComponent } from './components/form/form.component';
 import { UserDetailComponent } from './components/user-detail/user-detail.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +28,7 @@ import { UserDetailComponent } from './components/user-detail/user-detail.compon
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
