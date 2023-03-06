@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
-import { NewUser } from '../interfaces/new-user.interface';
 import { User } from '../interfaces/user.interface';
 
 @Injectable({
@@ -22,8 +21,8 @@ export class UsersService {
     return lastValueFrom(this.httpClient.get<User>(`${this.baseUrl}${pId}`));
   }
 
-  create(pUser: NewUser): Promise<NewUser> {
-    return lastValueFrom(this.httpClient.post<NewUser>(this.baseUrl, pUser));
+  create(pUser: User): Promise<User> {
+    return lastValueFrom(this.httpClient.post<User>(this.baseUrl, pUser));
   }
 
   update(pUser: User): Promise<User> {
